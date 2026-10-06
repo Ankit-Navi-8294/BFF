@@ -1,0 +1,66 @@
+spring:
+  application:
+    name: BFF - Best Food Forever
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.H2Dialect
+  datasource:
+    url: jdbc:h2:file:./data/bff_db;DB_CLOSE_DELAY=-1;MODE=MySQL
+    username: sa
+    password: password
+    driver-class-name: org.h2.Driver
+  sql:
+    init:
+      mode: always
+      data-locations: classpath:data.sql
+      continue-on-error: true
+
+
+  # OAuth2 Google Login — uncomment and set env vars when ready
+  # oauth2:
+  #   client:
+  #     registration:
+  #       google:
+  #         client-id: ${GOOGLE_CLIENT_ID}
+  #         client-secret: ${GOOGLE_CLIENT_SECRET}
+  #         scope: openid,profile,email
+  #         redirect-uri: http://localhost:8080/login/oauth2/code/google
+  #     provider:
+  #       google:
+  #         issuer-uri: https://accounts.google.com
+
+  # Spring AI Configuration (disabled for now)
+  # ai:
+  #   openai:
+  #     api-key: ${OPENAI_API_KEY}
+  #     chat:
+  #       options:
+  #         model: gpt-3.5-turbo
+  #         temperature: 0.7
+
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+logging:
+  level:
+    root: INFO
+    com.bff: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework.web: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+
+# JWT Configuration
+app:
+  jwt:
+    secret: ${JWT_SECRET:your-super-secret-key-change-in-production-with-at-least-256-bits}
+    expiration: 86400000  # 24 hours
+    refresh-expiration: 604800000  # 7 days
